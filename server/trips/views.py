@@ -16,6 +16,7 @@ class LogInView(TokenObtainPairView):
 
 
 class TripView(viewsets.ReadOnlyModelViewSet):
+    #TODO: add docstring
     lookup_field = 'id'
     lookup_url_kwarg = 'trip_id'
     permission_classes = (permissions.IsAuthenticated,)
