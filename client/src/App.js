@@ -1,14 +1,23 @@
 import React, { useState } from 'react';
-import { Button, Container, Form, Navbar } from 'react-bootstrap';
+import { Button, Container, Form, Nav, Navbar } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Outlet, Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+
+import { isRider } from './services/AuthService';
 
 import Landing from './components/Landing';
 import LogIn from './components/LogIn';
 import SignUp from './components/SignUp';
 import Driver from './components/Driver';
 import Rider from './components/Rider';
+import DriverDashboard from './components/DriverDashboard';
+import DriverDetail from './components/DriverDetail';
+import RiderDashboard from './components/RiderDashboard';
+import RiderDetail from './components/RiderDetail';
+import RiderRequest from './components/RiderRequest';
 
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
 import axios from 'axios';
@@ -41,34 +50,44 @@ function App () {
   };
 
   return (
-      <Routes>
-        <Route 
-          path='/' 
-          element={
-            <Layout 
-              isLoggedIn={isLoggedIn}
-              logOut={logOut}
-            />} >
-          <Route index element={<Landing isLoggedIn={isLoggedIn} />} />
+      <>
+        <Routes>
           <Route 
-            path='sign-up' 
+            path='/' 
             element={
-              <SignUp isLoggedIn={isLoggedIn} />
-            }
-          />
-          <Route 
-            path='log-in' 
-            element={
-              <LogIn 
+              <Layout 
                 isLoggedIn={isLoggedIn}
-                logIn={logIn}
-              />
-            }
-          />
-        </Route>
-        <Route path='rider' element={<Rider />} />
-        <Route path='driver' element={<Driver />} />
-      </Routes>
+                logOut={logOut}
+              />} >
+            <Route index element={<Landing isLoggedIn={isLoggedIn} />} />
+            <Route 
+              path='sign-up' 
+              element={
+                <SignUp isLoggedIn={isLoggedIn} />
+              }
+            />
+            <Route 
+              path='log-in' 
+              element={
+                <LogIn 
+                  isLoggedIn={isLoggedIn}
+                  logIn={logIn}
+                />
+              }
+            />
+          <Route path='driver' element={<Driver />}>
+            <Route index element={<DriverDashboard />} />
+            <Route path=':id' element={<DriverDetail />} />
+          </Route>
+          <Route path='rider' element={<Rider />}>
+            <Route index element={<RiderDashboard />} />
+            <Route path='request' element={<RiderRequest />} />
+            <Route path=':id' element={<RiderDetail />} />
+          </Route>
+          </Route>
+        </Routes>
+        
+      </>
   );
 }
 
@@ -82,6 +101,15 @@ function Layout ({isLoggedIn, logOut}){
           </LinkContainer>
           <Navbar.Toggle />
           <Navbar.Collapse className='justify-content-end'>
+            {
+              isRider() && (
+                <Nav className='me-auto'>
+                  <LinkContainer to='/rider/request'>
+                    <Nav.Link data-cy='request-trip'>Request a trip</Nav.Link>
+                  </LinkContainer>
+                </Nav>
+              )
+            }
             {
               isLoggedIn && (
                 <Form>
@@ -99,6 +127,7 @@ function Layout ({isLoggedIn, logOut}){
       <Container className='pt-3'>
         <Outlet />
       </Container>
+      <ToastContainer />
     </>
   );
 }
