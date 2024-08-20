@@ -5,37 +5,42 @@ import { toast } from 'react-toastify';
 import TripCard from './TripCard';
 import { connect, getTrips, messages } from '../services/TripService';
 
+
 const updateToast = (trip) => {
-  const driverName = `${trip.driver.first_name} ${trip.driver.last_name}`;
+  let driverName = null;
   if (trip.status === 'STARTED') {
+    driverName = `${trip.driver.first_name} ${trip.driver.last_name}`;
     toast.info(`${driverName} is coming to pick you up.`);
   } else if (trip.status === 'IN_PROGRESS') {
+    driverName = `${trip.driver.first_name} ${trip.driver.last_name}`;
     toast.info(`${driverName} is headed to your destination.`);
   } else if (trip.status === 'COMPLETED') {
+    driverName = `${trip.driver.first_name} ${trip.driver.last_name}`;
     toast.info(`${driverName} has dropped you off.`);
   }
 };
+
 
 function RiderDashboard (props) {
   const [trips, setTrips] = useState([]);
 
   useEffect(() => {
-  connect();
-    const subscription = messages.subscribe((message) => {
-      setTrips(prevTrips => [
-        ...prevTrips.filter(trip => trip.id !== message.data.id),
-        message.data
-      ]);
-      console.log("Checking message")
-      console.log(message)
-      updateToast(message.data);
-    });
-    return () => {
-      if (subscription) {
-        subscription.unsubscribe();
-      }
-    };
-  }, [setTrips]);
+    connect();
+      const subscription = messages.subscribe((message) => {
+        setTrips(prevTrips => [
+          ...prevTrips.filter(trip => trip.id !== message.data.id),
+          message.data
+        ]);
+        console.log("Checking message")
+        console.log(message)
+        updateToast(message.data);
+      });
+      return () => {
+        if (subscription) {
+          subscription.unsubscribe();
+        }
+      };
+    }, [setTrips]);
 
   useEffect(() => {
     const loadTrips = async () => {
