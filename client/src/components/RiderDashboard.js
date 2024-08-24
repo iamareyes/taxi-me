@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Breadcrumb } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-
 import TripCard from './TripCard';
 import { connect, getTrips, messages } from '../services/TripService';
 
@@ -31,8 +30,6 @@ function RiderDashboard (props) {
           ...prevTrips.filter(trip => trip.id !== message.data.id),
           message.data
         ]);
-        console.log("Checking message")
-        console.log(message)
         updateToast(message.data);
       });
       return () => {
