@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Breadcrumb, Card } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 
 import TripMedia from './TripMedia';
 import { getTrip } from '../services/TripService';

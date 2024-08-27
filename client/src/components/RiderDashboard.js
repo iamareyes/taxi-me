@@ -3,6 +3,8 @@ import { Breadcrumb } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import TripCard from './TripCard';
 import { connect, getTrips, messages } from '../services/TripService';
+import { Navigate } from 'react-router-dom';
+import { getUser } from '../services/AuthService.js';
 
 
 const updateToast = (trip) => {
@@ -24,7 +26,7 @@ function RiderDashboard (props) {
   const [trips, setTrips] = useState([]);
 
   useEffect(() => {
-    connect();
+      connect();
       const subscription = messages.subscribe((message) => {
         setTrips(prevTrips => [
           ...prevTrips.filter(trip => trip.id !== message.data.id),
@@ -69,6 +71,7 @@ function RiderDashboard (props) {
 
   return (
     <>
+        
       <Breadcrumb>
         <Breadcrumb.Item href='/'>Home</Breadcrumb.Item>
         <Breadcrumb.Item active>Dashboard</Breadcrumb.Item>

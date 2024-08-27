@@ -1,20 +1,27 @@
 import axios from 'axios';
-import { share } from 'rxjs/operators';
+import { share, catchError } from 'rxjs/operators';
 import { webSocket } from 'rxjs/webSocket';
-
+import { of } from 'rxjs';
 import { getAccessToken } from './AuthService';
+
 
 let _socket; // new
 export let messages; // new
 
 
 export const connect = () => {
-  if (!_socket || _socket.closed) {
-    const token = getAccessToken();
-    _socket = webSocket(`ws://localhost:8003/taxi/?token=${token}`);
-    messages = _socket.pipe(share());
-    messages.subscribe(message => console.log(message));
-  }
+    if (!_socket || _socket.closed) {
+      const token = getAccessToken();
+      _socket = webSocket(`ws://localhost:8003/taxi/?token=${token}`);
+      messages = _socket.pipe(share(),
+        catchError(error => {
+          _socket.complete()
+          console.log(error)
+          return of();
+        })
+      );
+      messages.subscribe(message => console.log(message))
+    }
 };
 
 export const createTrip = (trip) => {
@@ -34,6 +41,10 @@ export const getTrip = async (id) => {
     const response = await axios.get(url, { headers });
     return { response, isError: false };
   } catch (response) {
+    if(response.response.status === 401){
+          window.alert("Session has expired being redirected to login page. \n Please login again")
+          window.localStorage.removeItem('taxi.auth');
+      }
     return { response, isError: true };
   }
 };
@@ -45,7 +56,13 @@ export const getTrips = async () => {
   try {
     const response = await axios.get(url, { headers });
     return { response, isError: false };
+
   } catch (response) {
+      if(response.response.status === 401){
+            window.alert("Session has expired being redirected to login page. \n Please login again");
+            window.localStorage.removeItem('taxi.auth');
+            window.location.reload();
+      }
     return { response, isError: true };
   }
 };
