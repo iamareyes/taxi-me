@@ -15,9 +15,9 @@ function Map ({ dropOffAddress, lat, lng, pickUpAddress, zoom }) {
     dropOffAddress !== ''
   );
 
-  const directionsCallback = (response) => {
-    if (response !== null && response.status === 'OK') {
-      setResponse(response);
+  const directionsCallback = (resp) => {
+    if (!response && resp.status === 'OK') {
+      setResponse(resp);
     }
   };
 
@@ -43,7 +43,7 @@ function Map ({ dropOffAddress, lat, lng, pickUpAddress, zoom }) {
               options={{
                 origin: pickUpAddress,
                 destination: dropOffAddress,
-                travelMode: 'DRIVING'
+                travelMode: "DRIVING",
               }}
               callback={directionsCallback}
             />

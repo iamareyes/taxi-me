@@ -3,8 +3,6 @@ import { Breadcrumb } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import TripCard from './TripCard';
 import { connect, getTrips, messages } from '../services/TripService';
-import { Navigate } from 'react-router-dom';
-import { getUser } from '../services/AuthService.js';
 
 
 const updateToast = (trip) => {
