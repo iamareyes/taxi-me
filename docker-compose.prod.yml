@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+
+  taxi-server:
+    build:
+      context: ./server
+      dockerfile: ../compose/production/server/Dockerfile.prod
+    command: gunicorn taxi.asgi:application -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
+    container_name: taxi-server
+    depends_on:
+      - taxi-redis
+      - taxi-database
+    # ports:
+    #   - 8003:8000
+    expose:
+      - 8000
+    env_file:
+      - ./.env/.env-local
+    volumes:
+      - static_volume:/home/app/staticfiles/
+      - media_volume:/home/app/media/
+
+  nginx:
+    container_name: taxi-nginx
+    build:
+      context: .
+      dockerfile: ./compose/production/nginx/Dockerfile.prod
+    volumes:
+      - static_volume:/home/app/staticfiles/
+      - media_volume:/home/app/media/
+    ports:
+      - 1337:80
+    depends_on:
+      - taxi-server
+
+  taxi-redis:
+    container_name: taxi-redis
+    image: redis:7-alpine
+
+  taxi-database:
+    container_name: taxi-database
+    image: postgres:15-alpine
+    env_file:
+      - ./.env/.env-local
+    expose:
+      - 5432
+    volumes:
+      - taxi-database:/var/lib/postgresql/data
+
+  taxi-client:
+    build:
+      context: ./client
+    command: yarn start
+    container_name: taxi-client
+    depends_on:
+      - taxi-server
+    env_file:
+      - ./.env/.env-local
+    ports:
+      - 3001:3000
+    stdin_open: true
+    volumes: # Live Reload
+      - ./client:/usr/src/app
+
+volumes:
+  taxi-database:
+  static_volume:
+  media_volume:

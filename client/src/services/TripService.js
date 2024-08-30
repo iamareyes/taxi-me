@@ -16,6 +16,7 @@ export const connect = () => {
       messages = _socket.pipe(share(),
         catchError(error => {
           _socket.complete()
+          console.log("Ran into a Error")
           console.log(error)
           return of();
         })
