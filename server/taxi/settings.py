@@ -161,7 +161,5 @@ SIMPLE_JWT = {
     'USER_ID_CLAIM': 'id',
 }
 
-CORS_ORIGIN_WHITELIST = [
-    "http://localhost:3001",
-]
+CORS_ORIGIN_WHITELIST = ["http://localhost:1338"]
 CSRF_TRUSTED_ORIGINS = ["http://localhost:1337"]
