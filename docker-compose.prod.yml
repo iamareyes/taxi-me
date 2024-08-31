@@ -11,8 +11,6 @@ services:
     depends_on:
       - taxi-redis
       - taxi-database
-    # ports:
-    #   - 8003:8000
     expose:
       - 8000
     env_file:
@@ -31,8 +29,10 @@ services:
       - media_volume:/home/app/media/
     ports:
       - 1337:80
+      - 1338:30
     depends_on:
       - taxi-server
+      - taxi-client
 
   taxi-redis:
     container_name: taxi-redis
@@ -51,19 +51,18 @@ services:
   taxi-client:
     build:
       context: ./client
-    command: yarn start
+      dockerfile: ../compose/production/client/Dockerfile.prod
     container_name: taxi-client
     depends_on:
       - taxi-server
     env_file:
       - ./.env/.env-local
-    ports:
-      - 3001:3000
     stdin_open: true
-    volumes: # Live Reload
-      - ./client:/usr/src/app
+    volumes:
+      - ./client:/usr/src/app #TODO: remove this before deploying
 
 volumes:
   taxi-database:
   static_volume:
   media_volume:
+  html_build:
