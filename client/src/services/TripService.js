@@ -12,7 +12,7 @@ export let messages; // new
 export const connect = () => {
     if (!_socket || _socket.closed) {
       const token = getAccessToken();
-      _socket = webSocket(`ws://localhost:8003/taxi/?token=${token}`);
+      _socket = webSocket(`ws://localhost:1337/taxi/?token=${token}`);
       messages = _socket.pipe(share(),
         catchError(error => {
           _socket.complete()
