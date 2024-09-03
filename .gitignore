@@ -3,9 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+.DS_Store
 # C extensions
 *.so
-
+.git/
 # Distribution / packaging
 .Python
 build/
@@ -123,7 +124,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env/.env-local
+#.env/.env-local
 .env/env-production
 .venv
 env/
