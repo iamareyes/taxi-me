@@ -22,6 +22,13 @@ REACT_APP_GOOGLE_MAPS_KEY=
 
 ###### Create symbolic links for .env and docker-compose.yml run commands from root of project
 ```
-$ ln -s compose/local/.env .env
-$ ln -s compose/local/docker-compose.yml docker-compose.yml
+$ ln -sfn ./compose/local/.env .env
+$ ln -sfn ./compose/local/docker-compose.yml docker-compose.yml
 ```
+
+###### To build project
+```
+$ docker compose up -d --build
+```
+
+
