@@ -26,9 +26,16 @@ $ ln -sfn ./compose/local/.env .env
 $ ln -sfn ./compose/local/docker-compose.yml docker-compose.yml
 ```
 
+
 ###### To build project
 ```
 $ docker compose up -d --build
 ```
 
 
+###### For Production
+```
+$ ln -sfn ./compose/production/.env .env
+$ ln -sfn ./compose/production/docker-compose.yml docker-compose.yml
+$ ln -sfn ./compose/production/dockerrun.aws.json dockerrun.aws.json
+```
