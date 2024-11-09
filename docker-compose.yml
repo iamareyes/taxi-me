@@ -1,1 +1,1 @@
-./compose/local/docker-compose.yml
+./compose/production/docker-compose.yml

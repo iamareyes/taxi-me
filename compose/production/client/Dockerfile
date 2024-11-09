@@ -17,5 +17,5 @@ COPY yarn.lock .
 COPY . .
 
 RUN yarn install 
-RUN yarn run build --production
 
+RUN yarn run build --production

@@ -19,23 +19,23 @@ services:
       - static_volume:/home/app/staticfiles/
       - media_volume:/home/app/media/
 
-  taxi-client:
-    build:
-      context: ./client
-      dockerfile: ../compose/production/client/Dockerfile
-    #command: serve -s build -l 3000
-    command: yarn start
-    container_name: taxi-client
-    depends_on:
-      - taxi-server
-    env_file:
-      - ./.env
-    expose:
-      - 3000
-    stdin_open: true
-    volumes: # Live Reload
-      - ./client:/usr/src/app
-
+  # taxi-client:
+  #   build:
+  #     context: ./client
+  #     dockerfile: ../compose/production/client/Dockerfile
+  #   #command: serve -s build -l 3000
+    #command: yarn start
+    # container_name: taxi-client
+    # depends_on:
+    #   - taxi-server
+    # env_file:
+    #   - ./.env
+    # # expose:
+    #   - 3000
+    #stdin_open: true
+    # volumes: # Live Reload
+    #   # - ./client:/usr/src/app
+    #   - html_build:/home/app/build
   nginx:
     container_name: taxi-nginx
     build:
@@ -46,12 +46,13 @@ services:
     volumes:
       - static_volume:/home/app/staticfiles/
       - media_volume:/home/app/media/
+      # - html_build:/home/app/build/
+
     ports:
-      - 1337:80
-      - 1338:30
+      - 80:80
     depends_on:
       - taxi-server
-      - taxi-client
+      #- taxi-client
     
   taxi-redis:
     container_name: taxi-redis
@@ -71,4 +72,4 @@ volumes:
   taxi-database:
   static_volume:
   media_volume:
-  html_build:
+  # html_build:
