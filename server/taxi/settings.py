@@ -160,6 +160,8 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
     'USER_ID_CLAIM': 'id',
 }
+os.getenv('REDIS_URL', 'redis://localhost:6379')
 
-CORS_ORIGIN_WHITELIST = ["http://localhost:1338"]
-CSRF_TRUSTED_ORIGINS = ["http://localhost:1337"]
+
+CORS_ORIGIN_WHITELIST = [os.getenv('CORS_ORIGIN_WHITELIST',"http://localhost:1338")]
+CSRF_TRUSTED_ORIGINS = [os.getenv('CSRF_TRUSTED_ORIGINS',"http://localhost:1337")]
