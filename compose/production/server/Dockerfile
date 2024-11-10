@@ -52,7 +52,13 @@ RUN pip install -r requirements.prod.txt
 COPY . $APP_HOME
 
 # chown all the files to the app user
-RUN chown -R app:app $APP_HOME
 
-# change to the app user
+RUN chown -R app:app $APP_HOME
 USER app
+RUN  python manage.py collectstatic --no-input 
+#RUN ln -s home/app/static/js $APP_HOME/staticfiles/js
+#RUN ln -s home/app/static/css $APP_HOME/staticfiles/css
+# change to the app user
+
+USER app
+

@@ -1,4 +1,4 @@
-FROM node:19.0-alpine as build
+FROM node:19.0-alpine AS build
 
 # set working directory
 WORKDIR /usr/src/app
@@ -19,6 +19,7 @@ RUN yarn run build --production
 FROM nginx:1.25
 
 COPY --from=build /usr/src/app/build/ /etc/nginx/html/
-COPY --from=build /usr/src/app/build/static/. home/app/staticfiles/ 
+COPY --from=build /usr/src/app/build/static/ home/app/staticfiles/
+
 RUN rm /etc/nginx/conf.d/default.conf
 COPY ./compose/production/nginx/nginx.conf /etc/nginx/conf.d
